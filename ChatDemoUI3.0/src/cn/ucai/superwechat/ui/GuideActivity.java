@@ -21,10 +21,10 @@ public class GuideActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_register:
-                MFGT.gotoLogin(this);
+                MFGT.gotoRegister(this);
                 break;
             case R.id.img_login:
-                MFGT.gotoRegister(this);
+                MFGT.gotoLogin(this);
                 break;
         }
     }
