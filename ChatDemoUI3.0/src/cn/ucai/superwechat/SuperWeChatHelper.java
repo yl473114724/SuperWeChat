@@ -13,6 +13,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMContactListener;
 import com.hyphenate.EMError;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.EMGroupChangeListener;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMValueCallBack;
@@ -38,6 +39,7 @@ import cn.ucai.superwechat.ui.ChatActivity;
 import cn.ucai.superwechat.ui.MainActivity;
 import cn.ucai.superwechat.ui.VideoCallActivity;
 import cn.ucai.superwechat.ui.VoiceCallActivity;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.PreferenceManager;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
@@ -91,6 +93,8 @@ public class SuperWeChatHelper {
 	private static SuperWeChatHelper instance = null;
 	
 	private SuperWeChatModel demoModel = null;
+
+    private User currentUser = null;
 	
 	/**
      * sync groups status listener
@@ -844,8 +848,6 @@ public class SuperWeChatHelper {
 	
 	/**
 	 * update contact list
-	 * 
-	 * @param contactList
 	 */
 	public void setContactList(Map<String, EaseUser> aContactList) {
 		if(aContactList == null){
@@ -916,8 +918,6 @@ public class SuperWeChatHelper {
 
 	 /**
      * update user list to cache and database
-     *
-     * @param contactList
      */
     public void updateContactList(List<EaseUser> contactInfoList) {
          for (EaseUser u : contactInfoList) {
@@ -1239,5 +1239,17 @@ public class SuperWeChatHelper {
     public void popActivity(Activity activity) {
         easeUI.popActivity(activity);
     }
+    public User getCurrentUser() {
+        if(currentUser==null){
+            String username = EMClient.getInstance().getCurrentUser();
+            L.e(TAG,"getCurrentUsername="+username);
+            currentUser = new User(username);
+        }
+        return currentUser;
+    }
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
 
 }

@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import com.hyphenate.easeui.domain.User;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -38,12 +39,15 @@ import butterknife.OnClick;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.SuperWeChatHelper;
+import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.db.SuperWeChatDBManager;
+import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MD5;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.utils.ResultUtils;
 
 /**
  * Login screen
@@ -201,7 +205,22 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(String s) {
                 L.e(TAG,"s="+s);
-                loginSuccess();
+                if(s!=null && s!=""){
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if(result!=null && result.isRetMsg()){
+                        User user = (User) result.getRetData();
+                        if(user!=null) {
+                            UserDao dao = new UserDao(mContext);
+                            dao.saveUser(user);
+                            SuperWeChatHelper.getInstance().setCurrentUser(user);
+                            loginSuccess();
+                        }
+                    }else{
+                        pd.dismiss();
+                        L.e(TAG,"login fail,"+result);
+                    }
+                }
+
             }
             @Override
             public void onError(String error) {
