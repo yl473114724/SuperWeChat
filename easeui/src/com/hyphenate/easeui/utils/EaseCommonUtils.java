@@ -22,6 +22,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.HanziToPinyin;
 import com.hyphenate.util.HanziToPinyin.Token;
@@ -147,8 +148,7 @@ public class EaseCommonUtils {
 	
 	/**
      * set initial letter of according user's nickname( username if no nickname)
-     * 
-     * @param username
+     *
      * @param user
      */
     public static void setUserInitialLetter(EaseUser user) {
@@ -189,7 +189,7 @@ public class EaseCommonUtils {
         }
         user.setInitialLetter(letter);
     }
-    
+
     /**
      * change the chat type to EMConversationType
      * @param chatType
