@@ -49,18 +49,19 @@
                     android:textSize="12sp"
                     />
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="23dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/right"
-                    android:layout_height="wrap_content"/>
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/qrcode"
+                    android:layout_height="23dp"/>
             </RelativeLayout>
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.3dp"
                 android:background="@color/black3"
                 />
+
             <TextView
                 android:id="@+id/tv_profile_album"
                 style="@style/list_txt_Style_without_right"
@@ -68,6 +69,7 @@
                 android:drawableLeft="@drawable/icon_me_photo"
                 android:text="@string/profile_txt_album"
                 />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.3dp"
