@@ -38,17 +38,10 @@ public class EaseUserUtils {
     public static User getAppUserInfo(String username){
         if(userProvider != null)
             return userProvider.getAppUser(username);
+
         return null;
     }
-    public static User getCurrentAppUserInfo(){
-        String username = EMClient.getInstance().getCurrentUser();
-        if(userProvider != null)
-            return userProvider.getAppUser(username);
-        return null;
-    }
-
-
-
+    
     /**
      * set user avatar
      * @param username
@@ -87,6 +80,10 @@ public class EaseUserUtils {
      */
     public static void setAppUserAvatar(Context context, String username, ImageView imageView){
         User user = getAppUserInfo(username);
+        if(user==null){
+            user = new User(username);
+        }
+
         if(user != null && user.getAvatar() != null){
             Log.e(TAG,"setAppUserAvatar="+user.getAvatar());
             try {
@@ -100,11 +97,11 @@ public class EaseUserUtils {
             Glide.with(context).load(R.drawable.default_hd_avatar).into(imageView);
         }
     }
+
     /**
      * set app user's nickname
      */
     public static void setAppUserNick(String username,TextView textView){
-
         if(textView != null){
             User user = getAppUserInfo(username);
             Log.e(TAG,"user="+user);
@@ -115,6 +112,8 @@ public class EaseUserUtils {
             }
         }
     }
+
+
     public static void setCurentAppUserAvatar(FragmentActivity activity, ImageView imageView) {
         String username = EMClient.getInstance().getCurrentUser();
         setAppUserAvatar(activity,username,imageView);
@@ -125,19 +124,30 @@ public class EaseUserUtils {
         String username = EMClient.getInstance().getCurrentUser();
         setAppUserNick(username,textView);
     }
-    public static void setCurrentAppUserNameWithNo(TextView textView) {
-         String username = EMClient.getInstance().getCurrentUser();
-        setAppUserName("微信号 : ",username,textView);
-        }
 
+    public static void setCurrentAppUserNameWithNo(TextView textView) {
+        String username = EMClient.getInstance().getCurrentUser();
+        setAppUserName("微信号 : ",username,textView);
+    }
+
+    public static void setAppUserNameWithNo(String username, TextView textView) {
+        setAppUserName("微信号 : ",username,textView);
+    }
 
     public static void setCurrentAppUserName(TextView textView) {
         String username = EMClient.getInstance().getCurrentUser();
         setAppUserName("",username,textView);
     }
-    public static void setAppUserName(String suffix, String username, TextView textView) {
 
+    private static void setAppUserName(String suffix, String username, TextView textView) {
         textView.setText(suffix + username);
     }
 
+    public static User getCurrentAppUserInfo(){
+                String username = EMClient.getInstance().getCurrentUser();
+                if(userProvider != null)
+                        return userProvider.getAppUser(username);
+
+                        return null;
+            }
 }

@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import com.hyphenate.easeui.domain.User;
 
 import cn.ucai.superwechat.domain.RobotUser;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 
 public class UserDao {
 	public static final String TABLE_NAME = "uers";
@@ -37,6 +37,7 @@ public class UserDao {
 	public static final String ROBOT_COLUMN_NAME_NICK = "nick";
 	public static final String ROBOT_COLUMN_NAME_AVATAR = "avatar";
 
+
 	public static final String USER_TABLE_NAME = "t_superwechat_user";
 	public static final String USER_COLUMN_NAME = "m_user_name";
 	public static final String USER_COLUMN_NICK = "m_user_nick";
@@ -45,9 +46,8 @@ public class UserDao {
 	public static final String USER_COLUMN_AVATAR_SUFFIX = "m_user_avatar_suffix";
 	public static final String USER_COLUMN_AVATAR_TYPE = "m_user_avatar_type";
 	public static final String USER_COLUMN_AVATAR_LASTUPDATE_TIME = "m_user_avatar_lastupdate_time";
-
-
-
+	
+	
 	public UserDao(Context context) {
 	}
 
@@ -109,14 +109,18 @@ public class UserDao {
     public void saveRobotUser(List<RobotUser> robotList){
     	SuperWeChatDBManager.getInstance().saveRobotList(robotList);
     }
+
 	public void saveAppContact(User user){
 		SuperWeChatDBManager.getInstance().saveAppContact(user);
 	}
 
+
 	public Map<String, User> getAppContactList() {
+
 		return SuperWeChatDBManager.getInstance().getAppContactList();
-	}public void saveAppContactList(List<User> contactList) {
-		SuperWeChatDBManager.getInstance().saveAppContactList(contactList);
 	}
 
+	public void saveAppContactList(List<User> contactList) {
+		SuperWeChatDBManager.getInstance().saveAppContactList(contactList);
+	}
 }

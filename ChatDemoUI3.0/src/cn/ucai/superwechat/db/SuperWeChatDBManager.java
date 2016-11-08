@@ -7,10 +7,11 @@ import android.text.TextUtils;
 
 import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.SuperWeChatApplication;
-import com.hyphenate.easeui.domain.User;
 import cn.ucai.superwechat.domain.InviteMessage;
+import cn.ucai.superwechat.domain.InviteMessage.InviteMesageStatus;
 import cn.ucai.superwechat.domain.RobotUser;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.HanziToPinyin;
 
@@ -241,24 +242,24 @@ public class SuperWeChatDBManager {
                 msg.setTime(time);
                 msg.setGroupInviter(groupInviter);
                 
-                if(status == InviteMessage.InviteMesageStatus.BEINVITEED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.BEINVITEED);
-                else if(status == InviteMessage.InviteMesageStatus.BEAGREED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.BEAGREED);
-                else if(status == InviteMessage.InviteMesageStatus.BEREFUSED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.BEREFUSED);
-                else if(status == InviteMessage.InviteMesageStatus.AGREED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.AGREED);
-                else if(status == InviteMessage.InviteMesageStatus.REFUSED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.REFUSED);
-                else if(status == InviteMessage.InviteMesageStatus.BEAPPLYED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.BEAPPLYED);
-                else if(status == InviteMessage.InviteMesageStatus.GROUPINVITATION.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION);
-                else if(status == InviteMessage.InviteMesageStatus.GROUPINVITATION_ACCEPTED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION_ACCEPTED);
-                else if(status == InviteMessage.InviteMesageStatus.GROUPINVITATION_DECLINED.ordinal())
-                    msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION_DECLINED);
+                if(status == InviteMesageStatus.BEINVITEED.ordinal())
+                    msg.setStatus(InviteMesageStatus.BEINVITEED);
+                else if(status == InviteMesageStatus.BEAGREED.ordinal())
+                    msg.setStatus(InviteMesageStatus.BEAGREED);
+                else if(status == InviteMesageStatus.BEREFUSED.ordinal())
+                    msg.setStatus(InviteMesageStatus.BEREFUSED);
+                else if(status == InviteMesageStatus.AGREED.ordinal())
+                    msg.setStatus(InviteMesageStatus.AGREED);
+                else if(status == InviteMesageStatus.REFUSED.ordinal())
+                    msg.setStatus(InviteMesageStatus.REFUSED);
+                else if(status == InviteMesageStatus.BEAPPLYED.ordinal())
+                    msg.setStatus(InviteMesageStatus.BEAPPLYED);
+                else if(status == InviteMesageStatus.GROUPINVITATION.ordinal())
+                    msg.setStatus(InviteMesageStatus.GROUPINVITATION);
+                else if(status == InviteMesageStatus.GROUPINVITATION_ACCEPTED.ordinal())
+                    msg.setStatus(InviteMesageStatus.GROUPINVITATION_ACCEPTED);
+                else if(status == InviteMesageStatus.GROUPINVITATION_DECLINED.ordinal())
+                    msg.setStatus(InviteMesageStatus.GROUPINVITATION_DECLINED);
                 
                 msgs.add(msg);
             }
@@ -373,6 +374,7 @@ public class SuperWeChatDBManager {
 		}
 		return users;
 	}
+
     synchronized public void saveAppContact(User user){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -393,6 +395,7 @@ public class SuperWeChatDBManager {
             db.replace(UserDao.USER_TABLE_NAME, null, values);
         }
     }
+
     synchronized public Map<String, User> getAppContactList() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Map<String, User> users = new Hashtable<String, User>();
@@ -407,13 +410,16 @@ public class SuperWeChatDBManager {
                 user.setMAvatarPath(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_PATH)));
                 user.setMAvatarSuffix(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_SUFFIX)));
                 user.setMAvatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_LASTUPDATE_TIME)));
+
                 EaseCommonUtils.setAppUserInitialLetter(user);
+
                 users.put(username, user);
             }
             cursor.close();
         }
         return users;
     }
+
     synchronized public void saveAppContactList(List<User> contactList) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         if (db.isOpen()) {
@@ -433,9 +439,8 @@ public class SuperWeChatDBManager {
                     values.put(UserDao.USER_COLUMN_AVATAR_SUFFIX,user.getMAvatarSuffix());
                 if(user.getMAvatarLastUpdateTime() != null)
                     values.put(UserDao.USER_COLUMN_AVATAR_LASTUPDATE_TIME,user.getMAvatarLastUpdateTime());
-                db.replace(UserDao.USER_TABLE_NAME, null, values);}
+                db.replace(UserDao.USER_TABLE_NAME, null, values);
+            }
         }
     }
-
-
 }

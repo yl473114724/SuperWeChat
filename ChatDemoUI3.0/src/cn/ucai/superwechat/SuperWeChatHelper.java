@@ -13,7 +13,6 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMContactListener;
 import com.hyphenate.EMError;
-import com.hyphenate.easeui.domain.User;
 import com.hyphenate.EMGroupChangeListener;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMValueCallBack;
@@ -32,6 +31,7 @@ import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.EmojiconExampleGroupData;
 import cn.ucai.superwechat.domain.InviteMessage;
+import cn.ucai.superwechat.domain.InviteMessage.InviteMesageStatus;
 import cn.ucai.superwechat.domain.RobotUser;
 import cn.ucai.superwechat.parse.UserProfileManager;
 import cn.ucai.superwechat.receiver.CallReceiver;
@@ -48,6 +48,7 @@ import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseNotifier;
 import com.hyphenate.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
@@ -94,7 +95,7 @@ public class SuperWeChatHelper {
 	
 	private SuperWeChatModel demoModel = null;
 
-       private Map<String, User> appContactList;
+    private Map<String, User> appContactList;
 	
 	/**
      * sync groups status listener
@@ -460,7 +461,7 @@ public class SuperWeChatHelper {
             msg.setReason(reason);
             msg.setGroupInviter(inviter);
             Log.d(TAG, "receive invitation to join the group：" + groupName);
-            msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION);
+            msg.setStatus(InviteMesageStatus.GROUPINVITATION);
             notifyNewInviteMessage(msg);
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
@@ -491,7 +492,7 @@ public class SuperWeChatHelper {
             msg.setReason(reason);
             msg.setGroupInviter(invitee);
             Log.d(TAG, invitee + "Accept to join the group：" + _group == null ? groupId : _group.getGroupName());
-            msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION_ACCEPTED);
+            msg.setStatus(InviteMesageStatus.GROUPINVITATION_ACCEPTED);
             notifyNewInviteMessage(msg);
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
@@ -520,7 +521,7 @@ public class SuperWeChatHelper {
             msg.setReason(reason);
             msg.setGroupInviter(invitee);
             Log.d(TAG, invitee + "Declined to join the group：" + group.getGroupName());
-            msg.setStatus(InviteMessage.InviteMesageStatus.GROUPINVITATION_DECLINED);
+            msg.setStatus(InviteMesageStatus.GROUPINVITATION_DECLINED);
             notifyNewInviteMessage(msg);
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
@@ -548,7 +549,7 @@ public class SuperWeChatHelper {
             msg.setGroupName(groupName);
             msg.setReason(reason);
             Log.d(TAG, applyer + " Apply to join group：" + groupName);
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEAPPLYED);
+            msg.setStatus(InviteMesageStatus.BEAPPLYED);
             notifyNewInviteMessage(msg);
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
@@ -588,7 +589,7 @@ public class SuperWeChatHelper {
             msg.setTo(groupId);
             msg.setMsgId(UUID.randomUUID().toString());
             msg.addBody(new EMTextMessageBody(inviter + " " +st3));
-            msg.setStatus(EMMessage.Status.SUCCESS);
+            msg.setStatus(Status.SUCCESS);
             // save invitation as messages
             EMClient.getInstance().chatManager().saveMessage(msg);
             // notify invitation message
@@ -646,7 +647,7 @@ public class SuperWeChatHelper {
             msg.setReason(reason);
             Log.d(TAG, username + "apply to be your friend,reason: " + reason);
             // set invitation status
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEINVITEED);
+            msg.setStatus(InviteMesageStatus.BEINVITEED);
             notifyNewInviteMessage(msg);
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
@@ -664,7 +665,7 @@ public class SuperWeChatHelper {
             msg.setFrom(username);
             msg.setTime(System.currentTimeMillis());
             Log.d(TAG, username + "accept your request");
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEAGREED);
+            msg.setStatus(InviteMesageStatus.BEAGREED);
             notifyNewInviteMessage(msg);
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
@@ -729,6 +730,7 @@ public class SuperWeChatHelper {
         }
         return user;
 	}
+
     private User getAppUserInfo(String username){
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
@@ -743,10 +745,8 @@ public class SuperWeChatHelper {
         L.e(TAG,"user="+user);
         return user;
     }
-
-
-
-    /**
+	
+	 /**
      * Global listener
      * If this event already handled by an activity, you don't need handle it again
      * activityList.size() <= 0 means all activities already in background or not in Activity Stack
@@ -866,11 +866,11 @@ public class SuperWeChatHelper {
 	public SuperWeChatModel getModel(){
         return (SuperWeChatModel) demoModel;
     }
-	
-	/**
-	 * update contact list
-     *
-     * @param aContactList
+
+
+
+    /**
+	 * update mContactList
 	 */
 	public void setContactList(Map<String, EaseUser> aContactList) {
 		if(aContactList == null){
@@ -943,7 +943,7 @@ public class SuperWeChatHelper {
      * update user list to cache and database
       *
       * @param contactInfoList
-      */
+     */
     public void updateContactList(List<EaseUser> contactInfoList) {
          for (EaseUser u : contactInfoList) {
             contactList.put(u.getUsername(), u);
@@ -1278,8 +1278,10 @@ public class SuperWeChatHelper {
             }
             return;
         }
+
         appContactList = aContactList;
     }
+
     /**
      * save single contact
      */
@@ -1287,6 +1289,7 @@ public class SuperWeChatHelper {
         getAppContactList().put(user.getMUserName(), user);
         demoModel.saveAppContact(user);
     }
+
     /**
      * get contact list
      *
@@ -1294,13 +1297,15 @@ public class SuperWeChatHelper {
      */
     public Map<String, User> getAppContactList() {
         L.e(TAG,"getAppContactList,appContactList="+appContactList);
-        if (isLoggedIn() && (appContactList == null || appContactList.size()==0)) {
+        if (isLoggedIn() && (appContactList == null)|| appContactList.size()==0) {
             appContactList = demoModel.getAppContactList();
         }
+
         // return a empty non-null object to avoid app crash
         if(appContactList == null){
             return new Hashtable<String, User>();
         }
+
         L.e(TAG,"getAppContactList,appContactList="+appContactList.size());
         return appContactList;
     }
@@ -1317,7 +1322,4 @@ public class SuperWeChatHelper {
         mList.addAll(appContactList.values());
         demoModel.saveAppContactList(mList);
     }
-
-
-
 }
