@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/common_bg"
     android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <include layout="@layout/view_layout_title"/>
 
     <ScrollView
@@ -213,30 +214,6 @@
                         android:layout_centerVertical="true" />
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/btn_gray_normal" />
-
-
-                <LinearLayout
-                    android:id="@+id/ll_user_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dip"
-                    android:background="@drawable/em_btn_bottom_selector"
-                    android:padding="10dip" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="10dip"
-                        android:text="@string/title_user_profile"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp" />
-                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -244,7 +221,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@color/btn_gray_normal" />
-
 
                 <LinearLayout
                     android:id="@+id/ll_black_list"
@@ -345,7 +321,7 @@
                     android:layout_centerVertical="true" />
             </RelativeLayout>
 
-            
+
             <RelativeLayout
                 android:id="@+id/rl_switch_delete_msg_when_exit_group"
                 android:layout_width="match_parent"
@@ -370,7 +346,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
-            
+
             <RelativeLayout
                 android:id="@+id/rl_switch_auto_accept_group_invitation"
                 android:layout_width="match_parent"
@@ -395,7 +371,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
-            
+
             <RelativeLayout
                 android:id="@+id/rl_switch_adaptive_video_encode"
                 android:layout_width="match_parent"
@@ -420,7 +396,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true" />
             </RelativeLayout>
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -445,3 +421,4 @@
     </ScrollView>
 
 </LinearLayout>
+
