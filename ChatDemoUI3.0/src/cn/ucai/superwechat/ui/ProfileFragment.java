@@ -18,6 +18,9 @@ import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.utils.MFGT;
 
+/**
+ * Created by clawpo on 2016/11/4.
+ */
 
 public class ProfileFragment extends Fragment {
     @BindView(R.id.iv_profile_avatar)
@@ -58,11 +61,13 @@ public class ProfileFragment extends Fragment {
             case R.id.tv_profile_money:
                 RedPacketUtil.startChangeActivity(getActivity());
                 break;
+            //end of red packet code
             case R.id.tv_profile_setting:
                 MFGT.gotoSetting(getActivity());
                 break;
         }
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -79,3 +84,4 @@ public class ProfileFragment extends Fragment {
         setUserInfo();
     }
 }
+
