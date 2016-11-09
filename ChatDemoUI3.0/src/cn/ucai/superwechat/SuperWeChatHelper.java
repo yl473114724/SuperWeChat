@@ -630,14 +630,17 @@ public class SuperWeChatHelper {
                     public void onSuccess(String s) {
                         if(s!=null){
                             Result result = ResultUtils.getResultFromJson(s, User.class);
+                            //添加好友的时候添加保护
                             if(result!=null && result.isRetMsg()){
                                 User u = (User) result.getRetData();
-                                saveAppContact(u);
-                                broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
-                            }
+                                if(u!=null) {
+                                    saveAppContact(u);
+                                    broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+                                }
+                                }
+                            //
                         }
                     }
-
                     @Override
                     public void onError(String error) {
 
