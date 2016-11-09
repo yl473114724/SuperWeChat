@@ -1,6 +1,7 @@
 package cn.ucai.superwechat;
 
 public interface I {
+	String ACTION_BACK_CONVERSATION = "action_back_conversation";
 
 	public static interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
