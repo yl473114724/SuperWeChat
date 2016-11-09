@@ -20,12 +20,16 @@ import com.hyphenate.chat.EMClient;
 import cn.ucai.superwechat.SuperWeChatHelper;
 import cn.ucai.superwechat.SuperWeChatHelper.DataSyncListener;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.ContactItemView;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
@@ -38,6 +42,10 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.utils.ResultUtils;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -246,7 +254,23 @@ public class ContactListFragment extends EaseContactListFragment {
 		pd.setMessage(st1);
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
-		new Thread(new Runnable() {
+        NetDao.delContact(getActivity(), EMClient.getInstance().getCurrentUser(), tobeDeleteUser.getUsername(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if(s!=null){
+                    Result result = ResultUtils.getResultFromJson(s, User.class);
+                    if(result!=null && result.isRetMsg()){
+                        SuperWeChatHelper.getInstance().delAppContact(tobeDeleteUser.getUsername());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+            }
+        });
+
+        new Thread(new Runnable() {
 			public void run() {
 				try {
 					EMClient.getInstance().contactManager().deleteContact(tobeDeleteUser.getUsername());
@@ -269,9 +293,7 @@ public class ContactListFragment extends EaseContactListFragment {
 							Toast.makeText(getActivity(), st2 + e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
-
 				}
-
 			}
 		}).start();
 
