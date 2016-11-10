@@ -91,10 +91,9 @@ public class FriendProfileActivity extends BaseActivity {
                      Toast.makeText(this, R.string.not_connect_to_server, Toast.LENGTH_SHORT).show();
                  else {
                      startActivity(new Intent(this, VideoCallActivity.class).putExtra("username", user.getMUserName())
-                                                .putExtra("isComingCall", false));
+                             .putExtra("isComingCall", false));
                      // videoCallBtn.setEnabled(false);
-                                    }
-
+                 }
              break;
         }
     }
